@@ -20,6 +20,7 @@ def stats_partie_jour():
         else:
             stats_jour[date] = 1
 
+
 def temp_moyen():
     cumul_temp = 0
     for elements in partie_gen:
@@ -56,3 +57,4 @@ stats_partie_jour()
 temp_moyen()
 meilleur_joueur()
 print(stats_jour)
+print(partie_gen)

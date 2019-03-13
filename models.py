@@ -48,9 +48,10 @@ class StatsPerMatch(Base):
     duree = peewee.IntegerField()
     winner = peewee.CharField(max_length=255)
 
-    # @classmethod
-    # def stat_jour(cls):
-    #     """"""
+    @classmethod
+    def stat_jour(cls):
+        """"""
+        return cls.select()
 
 
 class StatsPerDay(Base):
