@@ -15,7 +15,7 @@ class Data:
         self.start_game_format = datetime.datetime.strptime(self.start_game, "%d/%m/%y %H:%M")
         self.end_game_format = datetime.datetime.strptime(self.end_game, "%d/%m/%y %H:%M")
         self.winner = data["Winner"]
-
+        self.nbr_partie_jour =
     def get_day(self):
 
         return self.start_game_format.date()
@@ -32,6 +32,7 @@ for fiche in os.listdir('./partie'):
     with open('./partie/' + fiche, 'r') as fichier:
         test = fichier.read()
         stats = Data(test)
+
         mo.ReceiverMessage.get_or_create(msg_id=stats.msg_id,
                                          msg_machine=stats.nom_serveur,
                                          msg=stats.msg)
@@ -39,12 +40,18 @@ for fiche in os.listdir('./partie'):
                                        start_game=stats.get_day(),
                                        duree=stats.get_game_duration(),
                                        winner=stats.get_winner())
-        mo.StatsPerDay.get_or_create(machine_name=stats.nom_serveur,
-                                     nombre_partie=8,
-                                     duree_moy_partie=54,
-                                     joueur1_win=5,
-                                     joueur2_win=2,
-                                     egalite=1)
+
+        try:
+            mo.StatsPerDay.get(mo.StatsPerDay.machine_name == stats.nom_serveur, mo.StatsPerDay.day == stats.start_game)
+            print("Cette enregistrement existe déja")
+        except:
+
+            mo.StatsPerDay.get_or_create(machine_name=stats.nom_serveur,
+                                         nombre_partie=8,
+                                         duree_moy_partie=54,
+                                         joueur1_win=5,
+                                         joueur2_win=2,
+                                         egalite=1)
 
         print(stats.get_day)
         print(stats.get_game_duration)
